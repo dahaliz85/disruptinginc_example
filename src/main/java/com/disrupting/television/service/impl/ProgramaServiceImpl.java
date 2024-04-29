@@ -30,11 +30,7 @@ public class ProgramaServiceImpl implements ProgramaService {
 		List<Programa> programasExistentes =  programaRepository.findAllByCanalFechaHora(dto.getCanal(), dto.getFecha(), dto.getHora());
 		if(programasExistentes == null || programasExistentes.isEmpty()) {
 			Programa programaNuevo = programaRepository.save(ProgramaConverter.fromDtoToEntity(dto));
-			if(programaNuevo != null) {
-				return true;
-			} else {
-				return false;
-			}
+			return  programaNuevo != null;
 		}else {
 			return false;
 		}
@@ -61,11 +57,8 @@ public class ProgramaServiceImpl implements ProgramaService {
 		if(programaExistente.isEmpty()) {
 			
 			Programa programaModificado = programaRepository.save(ProgramaConverter.fromDtoToEntity(dto));
-			if(programaModificado == null) {
-				return false;
-			} else {
-				return true;
-			}
+			return programaModificado == null;
+			
 		}else {
 			return false;
 		}
@@ -73,14 +66,17 @@ public class ProgramaServiceImpl implements ProgramaService {
 	
 	@Override
 	public boolean eliminarPrograma(String programa) throws ParseException {
-		// TODO Auto-generated method stub
 		
 		ProgramaDTO dto = ProgramaUtil.obtenerDatosPrograma(programa);
 		
-		ProgramaUtil.validarFechaHoraBorrado(dto);
-		
-		
-		
+		if(ProgramaUtil.validarFechaHoraBorrado(dto)) {
+			programaRepository.delete(ProgramaConverter.fromDtoToEntity(dto));
+			Optional<Programa> optPrograma = programaRepository.findByCanalFechaAndHoraAndDuracionAndDescripcion(dto.getCanal(), dto.getFecha(), dto.getHora(), dto.getDuracion(), dto.getDescripcion());
+			if(optPrograma.isPresent()) {
+				programaRepository.delete(ProgramaConverter.fromDtoToEntity(dto));
+				return true;
+			}
+		}
 		return false;
 	}
 	

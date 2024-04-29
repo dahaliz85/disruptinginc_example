@@ -28,5 +28,18 @@ public interface ProgramaRepository extends JpaRepository<Programa, Integer> {
 			@Param("fecha") String fecha, 
 			@Param("hora") String hora,
 			@Param("duracion") String duracion);
+	
+	@Query(value = "SELECT p FROM Programa p WHERE "
+			+ "p.canal = :canal AND p.fecha = :fecha AND "
+			+ "p.hora = :hora AND p.duracion = :duracion AND "
+			+ "p.descripcion = :descripcion ")
+	public Optional<Programa> findByCanalFechaAndHoraAndDuracionAndDescripcion(
+			@Param("canal") Integer canal, 
+			@Param("fecha") String fecha, 
+			@Param("hora") String hora,
+			@Param("duracion") String duracion,
+			@Param("descripcion") String descripcion);
+	
+	
 
 }

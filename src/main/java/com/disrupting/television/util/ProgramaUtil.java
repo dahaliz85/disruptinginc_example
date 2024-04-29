@@ -1,16 +1,19 @@
 package com.disrupting.television.util;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 
 import com.disrupting.television.dto.ProgramaDTO;
 
+
+
 public class ProgramaUtil {
+	
+	private ProgramaUtil() {
+	}
+	
+
 	
 	public static ProgramaDTO obtenerDatosPrograma(String programa) {
 		
@@ -44,7 +47,6 @@ public class ProgramaUtil {
 		dto.setHora(formatHora(datosPrograma[0]));
 		dto.setFecha(datosPrograma[1].substring(0, datosPrograma[1].length()-1));
 		
-		return ;
 	}
 	
 	public static String formatHora(String hora) {
@@ -55,41 +57,39 @@ public class ProgramaUtil {
 		for(int x=0; x < hora.length(); x++) {
 			
 			char currentChar = hora.charAt(x);
-			if(currentChar == '.') {
-				horaFinal.append(':');
-				continue;
-			}
-			if(currentChar == 'a' || currentChar == 'p') {
-				if(currentChar == 'a') {
+			
+			switch(currentChar) {
+				case '.':
+					horaFinal.append(':');
+					break;
+				case 'a':
 					horaFinal.append(" a. m.");
-				}else {
+					break;
+				case 'p':
 					horaFinal.append(" p. m.");
-				}
-				break;
+					break;
+				default:
+					horaFinal.append(currentChar);
 			}
-			horaFinal.append(currentChar);
 		}
 
 		return horaFinal.toString();
 	}
 
-	public static void validarFechaHoraBorrado(ProgramaDTO dto) throws ParseException {
+	public static boolean validarFechaHoraBorrado(ProgramaDTO dto) {
 		String patternHora = "hh:mm a";
 		String patternFecha = "dd/MM/yyyy";
 		LocalDate fechaActual = LocalDate.now();
 		LocalTime horaActual = LocalTime.now();
-		DateTimeFormatter dateTimeFormatter = 
-				new DateTimeFormatterBuilder()
-                .parseCaseInsensitive()
-                .appendPattern("dd/MM/yyyy H:m a")
-                .toFormatter();
+		
+		
 		
 		System.out.println(fechaActual.format(DateTimeFormatter.ofPattern(patternFecha)));
 		System.out.println(horaActual.format(DateTimeFormatter.ofPattern(patternHora)));
 		
-		//System.out.println(dateTimeFormatter.parse(dto.getHora()));
 		
-		return ;
+		
+		return true;
 	}
 	
 }
