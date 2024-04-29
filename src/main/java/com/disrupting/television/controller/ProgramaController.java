@@ -1,6 +1,7 @@
 package com.disrupting.television.controller;
 
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +61,7 @@ public class ProgramaController {
 	
 	
 	@DeleteMapping("/programa")
-	public ResponseEntity<String> eliminarPrograma(@RequestParam String programa){
+	public ResponseEntity<String> eliminarPrograma(@RequestParam String programa) throws ParseException{
 		
 		boolean resultado = programaService.eliminarPrograma(programa);
 		

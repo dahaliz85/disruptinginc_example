@@ -1,5 +1,6 @@
 package com.disrupting.television.service.impl;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -71,7 +72,7 @@ public class ProgramaServiceImpl implements ProgramaService {
 	}
 	
 	@Override
-	public boolean eliminarPrograma(String programa) {
+	public boolean eliminarPrograma(String programa) throws ParseException {
 		// TODO Auto-generated method stub
 		
 		ProgramaDTO dto = ProgramaUtil.obtenerDatosPrograma(programa);
